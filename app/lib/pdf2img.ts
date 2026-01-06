@@ -1,3 +1,4 @@
+
 export interface PdfConversionResult {
     imageUrl: string;
     file: File | null;
@@ -9,23 +10,25 @@ let isLoading = false;
 let loadPromise: Promise<any> | null = null;
 
 async function loadPdfJs(): Promise<any> {
-    if (pdfjsLib) return pdfjsLib;
-    if (loadPromise) return loadPromise;
+   if (pdfjsLib) return pdfjsLib;
+  if (loadPromise) return loadPromise;
 
-    isLoading = true;
-    // @ts-expect-error - pdfjs-dist/build/pdf.mjs is not a module
-    loadPromise = import("pdfjs-dist/build/pdf.mjs").then((lib) => {
-        // Set the worker source to use local file
-        lib.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.mjs";
-        pdfjsLib = lib;
-        isLoading = false;
-        return lib;
-    });
+  loadPromise = import("pdfjs-dist/build/pdf.mjs").then((lib) => {
+    lib.GlobalWorkerOptions.workerSrc = new URL(
+      "pdfjs-dist/build/pdf.worker.min.mjs",
+      import.meta.url
+    ).toString();
 
-    return loadPromise;
+    pdfjsLib = lib;
+    return lib;
+  });
+
+  return loadPromise;
 }
 
 export async function convertPdfToImage(
+  
+  
     file: File
 ): Promise<PdfConversionResult> {
     try {

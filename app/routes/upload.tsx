@@ -1,4 +1,4 @@
-import {use, useState, type FormEvent} from 'react'
+import { useState, type FormEvent} from 'react'
 import FileUploader from '~/components/FileUploader';
 import Navbar from '~/components/Navbar'
 import { usePuterStore } from '~/lib/puter';
@@ -7,7 +7,7 @@ import { convertPdfToImage } from '../lib/pdf2img';
 import { generateUUID } from '~/lib/utils';
 import {prepareInstructions} from "../../constants"
 
-const upload = () => {
+const Upload = () => {
     const {auth,fs,isLoading,ai,kv}=usePuterStore(); 
     const navigate=useNavigate() 
     const [isProcessing, setIsProcessing] = useState(false);
@@ -140,4 +140,4 @@ const upload = () => {
   )
 }
 
-export default upload
+export default Upload
